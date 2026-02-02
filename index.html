@@ -160,6 +160,7 @@
 
         const markerGroup = L.featureGroup();
         const visitedLocations = new Set();
+        let finalMessageShown = false;
         
         locations.forEach((location, index) => {
             const marker = L.marker([location.lat, location.lng], { 
@@ -178,7 +179,8 @@
             
             marker.on('popupopen', function() {
                 visitedLocations.add(index);
-                if (visitedLocations.size === locations.length) {
+                if (visitedLocations.size === locations.length && !finalMessageShown) {
+                    finalMessageShown = true;
                     setTimeout(() => {
                         showFinalMessage();
                     }, 500);
