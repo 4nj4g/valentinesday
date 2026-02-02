@@ -9,9 +9,33 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <audio id="bgMusic" loop>
+        <source src="keep-on-loving-you.mp3#t=72" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // Background music handler
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.volume = 0.2; // 30% volume
+        
+        // Try to play music
+        function playMusic() {
+            bgMusic.currentTime = 72; // Start at 1:12
+            bgMusic.play().catch(e => {
+                console.log('Autoplay blocked, waiting for user interaction');
+            });
+        }
+        
+        // Try to play immediately
+        playMusic();
+        
+        // Also try on first click
+        document.addEventListener('click', function() {
+            playMusic();
+        }, { once: true });
+
         const map = L.map('map').setView([45.186044552810155, 19.936368346918943], 17);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors',
@@ -231,7 +255,7 @@
             messageDiv.innerHTML = `
                 <button class="close-button" onclick="this.parentElement.remove()">×</button>
                 <div class="final-message-text">
-                    Eej ljubavi, srećnih sad vec 7 meseci i dan zaljubljenih i srećno sve drugo. Napravila sam malu zbirku naših uspomena! Probaj da nađeš sve <3
+                    Eej ljubavi, srećnih sad vec 7 meseci i dan zaljubljenih <3
                 </div>
             `;
             document.body.appendChild(messageDiv);
