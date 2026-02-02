@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naša Mapa Sećanja</title>
+    <link rel="icon" href="icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const map = L.map('map').setView([45.186044552810155, 19.936368346918943], 17);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 22
+        }).addTo(map);
+        const customIcon = L.icon({
+            iconUrl: 'locationpin.png',  
+            iconSize: [40, 40],           
+            iconAnchor: [20, 40],         
+            popupAnchor: [0, -40]        
+        });
+        const defaultIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        const locations = [
+            {
+                lat: 45.185044552810155,
+                lng: 19.936368346918943,
+                title: "Gde je sve pocelo <3",
+                description: "Jel ti se svidela hrana?",
+                date: "18.09.2021.",
+                image: "prvidejt.png"
+            },
+            {
+                lat: 45.254299,
+                lng: 19.850988,
+                title: "Prvi dejt",
+                description: "Reeecimo",
+                image: "bubice.png",
+                date: "29.09.2021."
+            },
+            {
+                lat: 45.2570205, 
+                lng:  19.8337056,
+                title: "Pokusaj dejta godina 2",
+                description: "Flying Dutchman - prvi i poslednji put da sam krocila tu",
+                date: "nadji datum."
+            },
+            {
+                lat: 45.25228277,
+                lng: 19.86227241,
+                title: "Prvi Exit",
+                description: "Nas prvi zapravo zajednicki exit",
+                image: "prviexit.png",
+                date: "10.07.2025.-13.07.2025."
+            },
+            {
+                lat: 45.24726397, 
+                lng: 19.84473121,
+                title: "Bilijar",
+                description: "Mislim da cu da idem kuci - pa ja idem svakako ti kako hoces",
+                date: "21.06.2025."
+            },
+            {
+                lat: 45.24556757,
+                lng: 19.84930088,
+                title: "Prvi poljubac",
+                description: "Prvi pokusaj poljupca (nema sanse)! <br>Konacno pogledali Barbie... i prvi ultra prijatan poljubac. ",
+                image: "barbie.png",
+                date: "08.07.2025."
+            },
+            {
+                lat: 45.24636757,
+                lng: 19.85230088,
+                title: "Dan otvorenih vrata",
+                description: "Isao/la sam samo jer sam se nadao/la da ces biti tamo<br>Zamisli Anja nam drzi vrata..."
+                ,date: "21.06.2025."
+            },
+            {
+                lat: 45.251931,
+                lng: 19.837008,
+                title: "Blok blok",
+                description: "Blokada, odbojka, neprijatnost, prvi cvet koji sam dobila od tebe",
+                image: "cvet.jpeg",
+                date: "nadji datum."
+            },
+            {
+                lat: 45.242566, 
+                lng: 19.847651,
+                title: "Sudbinsko sretanje",
+                description: "+ Nikodin",
+                date: "30.06.2025."
+            },
+            {
+                lat: 45.277538,
+                lng: 20.085575,
+                title: "Prvo volim te",
+                description: "Pijani i kod Jelene, ali ne bih menjala ni za sta<br> I jos jedna Anja koja ne moze da skine pogled s tebe",
+                image: "jelena.png",
+                date: "29.07.2025."
+            },
+            {
+                lat: 45.217299,
+                lng: 19.904101,
+                title: "Onaj rodjendan",
+                description: "Ne znam sta bih da se nismo ovde sreli :)",
+                image: "2plga.jpeg",
+                date: "08.06.2022."
+            },
+            {
+                lat: 45.264666, 
+                lng: 19.860261,
+                title: "Prvi dejt",
+                description: "Ajmo negde lepo zajedno a da nije blokada <br> 'Ako ikada budemo zajedno idemo u klub preko puta!' - 'Srusice se kad mi dodjemo'"
+                ,date: "nadji datum."
+            },
+            {
+                lat: 50.069987, 
+                lng: 14.381586,
+                title: "Prvo putovanje",
+                description: "Praag - najlepsih 7 dana u zivotu s ljubavlju mog zivota<3",
+                image: "prag.jpeg",
+                date: "15.09.2023.-21.09.2023."
+            },
+            {
+                lat: 50.082101, 
+                lng: 14.418616,
+                title: "Cetiri godine!",
+                description: "Jedan od najlepsih dana ikada <3<br>Muzej cokolade, photobooth, vecera i naravno cinnamon rolls!",
+                image: "godisnjica.jpeg",
+                date: "18.09.2025."
+            },
+            {
+                lat: 45.267126,
+                lng: 19.839875,
+                title: "Prvi s",
+                description: "voOOoooOOOoooOOlim teeeeee<33333",
+                image: "prvi.jpeg",
+                date: "12.11.2025."    
+            },
+            {
+                lat: 45.406894, 
+                lng: 19.583086,
+                title: "Moj rodjendan",
+                description: "Ulepsao si mi ga milion puta i dan i proslavu i koncept <3",
+                image: "rojd.jpeg",
+                date: "18.12.2025."    
+            }
+        ];
+
+        const markerGroup = L.featureGroup();
+        const visitedLocations = new Set();
+        
+        locations.forEach((location, index) => {
+            const marker = L.marker([location.lat, location.lng], { 
+                icon: customIcon  
+            }).addTo(map);
+            const popupContent = `
+                <div>
+                    <div class="popup-title">${location.title}</div>
+                    ${location.image ? `<img src="${location.image}" alt="${location.title}" class="popup-image" style="${(location.title === 'Gde je sve pocelo <3' || location.title === 'Prvi dejt') ? 'min-width: 200px !important;' : ''}">` : ''}
+                    <div class="popup-description">${location.description}</div>
+                    ${location.date ? `<div class="popup-date">${location.date}</div>` : ''}
+                </div>
+            `;
+            
+            marker.bindPopup(popupContent);
+            
+            marker.on('popupopen', function() {
+                visitedLocations.add(index);
+                if (visitedLocations.size === locations.length) {
+                    setTimeout(() => {
+                        showFinalMessage();
+                    }, 500);
+                }
+            });
+            
+            markerGroup.addLayer(marker);
+        });
+        
+        function showFinalMessage() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'final-message show';
+            messageDiv.innerHTML = `
+                <button class="close-button" onclick="this.parentElement.remove(); showHeartButton();">×</button>
+                <div class="final-message-text">
+                     Volim te, s tobom je svaki dan i svako mesto najlepše!<br>
+                    Srećan dan zaljubljenih ljubaviii<333
+                </div>
+            `;
+            document.body.appendChild(messageDiv);
+        }
+        
+        function showHeartButton() {
+            const heartBtn = document.createElement('button');
+            heartBtn.className = 'heart-button show';
+            heartBtn.innerHTML = '<3';
+            heartBtn.onclick = function() {
+                showMessageWithClose();
+            };
+            document.body.appendChild(heartBtn);
+        }
+        
+        function showMessageWithClose() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'final-message show';
+            messageDiv.innerHTML = `
+                <button class="close-button" onclick="this.parentElement.remove()">×</button>
+                <div class="final-message-text">
+                    Volim te, s tobom je svaki dan i svako mesto najlepše!<br>
+                    Srećan dan zaljubljenih ljubaviii<333
+                </div>
+            `;
+            document.body.appendChild(messageDiv);
+        }        
+        function showWelcomeMessage() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'final-message show';
+            messageDiv.innerHTML = `
+                <button class="close-button" onclick="this.parentElement.remove()">×</button>
+                <div class="final-message-text">
+                    Eej ljubavi, srećnih sad vec 7 meseci i dan zaljubljenih i srećno sve drugo. Napravila sam malu zbirku naših uspomena! Probaj da nađeš sve <3
+                </div>
+            `;
+            document.body.appendChild(messageDiv);
+        }
+        
+        showWelcomeMessage();    </script>
+</body>
+</html>
