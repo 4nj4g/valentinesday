@@ -16,11 +16,9 @@
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Background music handler
         const bgMusic = document.getElementById('bgMusic');
-        bgMusic.volume = 0.2; // 30% volume
+        bgMusic.volume = 0.1; 
         
-        // Try to play music
         function playMusic() {
             bgMusic.currentTime = 72; // Start at 1:12
             bgMusic.play().catch(e => {
@@ -28,15 +26,13 @@
             });
         }
         
-        // Try to play immediately
         playMusic();
         
-        // Also try on first click
         document.addEventListener('click', function() {
             playMusic();
         }, { once: true });
 
-        const map = L.map('map').setView([45.186044552810155, 19.936368346918943], 17);
+        const map = L.map('map').setView([45.188044552810155, 19.936368346918943], 17);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors',
             maxZoom: 22
@@ -61,9 +57,17 @@
                 lat: 45.185044552810155,
                 lng: 19.936368346918943,
                 title: "Gde je sve pocelo <3",
-                description: "Jel ti se svidela hrana?",
+                description: "Jel ti se svidela hrana? <br>Moramo nekad da blejimo!",
                 date: "18.09.2021.",
-                image: "prvidejt.png"
+                images: ["prvidejt2.png", "prvidejt.png"]
+            },
+            {
+                lat: 45.255829, 
+                lng: 19.846381,
+                title: "Prvo drzanje za ruke",
+                description: "Dejt? + Ilija<br>",
+                date: "24.09.2021.",
+                image: "ruke.jpeg"
             },
             {
                 lat: 45.254299,
@@ -78,13 +82,13 @@
                 lng:  19.8337056,
                 title: "Pokusaj dejta godina 2",
                 description: "Flying Dutchman - prvi i poslednji put da sam krocila tu",
-                date: "nadji datum."
+                date: "01.12.2022."
             },
             {
                 lat: 45.25228277,
                 lng: 19.86227241,
                 title: "Prvi Exit",
-                description: "Nas prvi zapravo zajednicki exit",
+                description: "Nas prvi zapravo zajednicki exit + bezanje od Dunje + Tanatos",
                 image: "prviexit.png",
                 date: "10.07.2025.-13.07.2025."
             },
@@ -99,7 +103,7 @@
                 lat: 45.24556757,
                 lng: 19.84930088,
                 title: "Prvi poljubac",
-                description: "Prvi pokusaj poljupca (nema sanse)! <br>Konacno pogledali Barbie... i prvi ultra prijatan poljubac. ",
+                description: "Konacno pogledali Barbie... i prvi ultra prijatan poljubac.<br>'a ne danas ono ruzan datum' ",
                 image: "barbie.png",
                 date: "08.07.2025."
             },
@@ -116,13 +120,13 @@
                 title: "Blok blok",
                 description: "Blokada, odbojka, neprijatnost, prvi cvet koji sam dobila od tebe",
                 image: "cvet.jpeg",
-                date: "nadji datum."
+                date: "01.07.2025."
             },
             {
                 lat: 45.242566, 
                 lng: 19.847651,
                 title: "Sudbinsko sretanje",
-                description: "+ Nikodin",
+                description: "'Sta ima' 'Evo upravo raskinula' + Nikodin",
                 date: "30.06.2025."
             },
             {
@@ -136,17 +140,17 @@
             {
                 lat: 45.217299,
                 lng: 19.904101,
-                title: "Onaj rodjendan",
-                description: "Ne znam sta bih da se nismo ovde sreli :)",
+                title: "The rodjendan",
+                description: "Pored svega, ja najiskrenije ne znam sta bih da se nismo ovde sreli :)",
                 image: "2plga.jpeg",
                 date: "08.06.2022."
             },
             {
                 lat: 45.264666, 
                 lng: 19.860261,
-                title: "Prvi dejt",
+                title: "Prvi 'pravi' dejt",
                 description: "Ajmo negde lepo zajedno a da nije blokada <br> 'Ako ikada budemo zajedno idemo u klub preko puta!' - 'Srusice se kad mi dodjemo'"
-                ,date: "nadji datum."
+                ,date: "05.07.2025."
             },
             {
                 lat: 50.069987, 
@@ -160,7 +164,7 @@
                 lat: 50.082101, 
                 lng: 14.418616,
                 title: "Cetiri godine!",
-                description: "Jedan od najlepsih dana ikada <3<br>Muzej cokolade, photobooth, vecera i naravno cinnamon rolls!",
+                description: "Jedan od najlepsih dana ikada <3<br>Muzej cokolade, photobooth, vecera i naravno cinnamon rolls! I sve to sa mojom omiljenom osobom<3",
                 image: "godisnjica.jpeg",
                 date: "18.09.2025."
             },
@@ -176,7 +180,7 @@
                 lat: 45.406894, 
                 lng: 19.583086,
                 title: "Moj rodjendan",
-                description: "Ulepsao si mi ga milion puta i dan i proslavu i koncept <3",
+                description: "Ulepsao si mi ga milion puta i dan i proslavu i ceo koncept <3",
                 image: "rojd.jpeg",
                 date: "18.12.2025."    
             }
@@ -190,10 +194,19 @@
             const marker = L.marker([location.lat, location.lng], { 
                 icon: customIcon  
             }).addTo(map);
+            let imageHTML = '';
+            if (location.images && Array.isArray(location.images)) {
+                imageHTML = location.images.map(img => 
+                    `<img src="${img}" alt="${location.title}" class="popup-image" style="${(location.title === 'Gde je sve pocelo <3' || location.title === 'Prvi dejt') ? 'min-width: 200px !important;' : ''}">`
+                ).join('');
+            } else if (location.image) {
+                imageHTML = `<img src="${location.image}" alt="${location.title}" class="popup-image" style="${(location.title === 'Gde je sve pocelo <3' || location.title === 'Prvi dejt') ? 'min-width: 200px !important;' : ''}">`;
+            }
+            
             const popupContent = `
                 <div>
                     <div class="popup-title">${location.title}</div>
-                    ${location.image ? `<img src="${location.image}" alt="${location.title}" class="popup-image" style="${(location.title === 'Gde je sve pocelo <3' || location.title === 'Prvi dejt') ? 'min-width: 200px !important;' : ''}">` : ''}
+                    ${imageHTML}
                     <div class="popup-description">${location.description}</div>
                     ${location.date ? `<div class="popup-date">${location.date}</div>` : ''}
                 </div>
